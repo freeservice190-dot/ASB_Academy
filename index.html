@@ -125,6 +125,10 @@
 <!-- ── SCRIPTS ── -->
 <script src="chapters.js"></script>
 <script src="app.js"></script>
-
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('pwabuilder-sw.js');
+  }
+</script>
 </body>
 </html>
