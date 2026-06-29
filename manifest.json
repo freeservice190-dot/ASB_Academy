@@ -1,0 +1,11 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "asbacademy",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "BAcademy",
+  "start_url": "/",
+  "theme_color": "#007aff"
+}
