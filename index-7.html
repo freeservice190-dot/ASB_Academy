@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#007aff">
+<title>ASB JavaScript Academy</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header id="header">
+  <button id="menuBtn" onclick="toggleDrawer()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <span class="logo">📘 ASB JS Academy</span>
+  <span id="xpBadge">0 XP</span>
+</header>
+
+<!-- ── OVERLAY ── -->
+<div id="overlay" onclick="closeDrawer()"></div>
+
+<!-- ── DRAWER ── -->
+<nav id="drawer">
+  <div class="drawer-head">
+    <h2>📘 ASB JavaScript Academy</h2>
+    <p>বাংলায় JavaScript A-Z — Beginner থেকে Expert</p>
+  </div>
+  <div class="drawer-search">
+    <input type="text" placeholder="🔍 Chapter খোঁজো..." oninput="filterDrawer(this.value)">
+  </div>
+  <div class="drawer-list" id="drawerList"></div>
+</nav>
+
+<!-- ── MAIN ── -->
+<main id="main">
+
+  <!-- HOME VIEW -->
+  <section class="view active" id="view_home">
+    <div class="home-hero">
+      <h1>স্বাগতম! 🎉</h1>
+      <p>Beginner থেকে Expert পর্যন্ত JavaScript বাংলায় শেখো</p>
+    </div>
+
+    <span class="streak-badge" id="streakBadge">🔥 0 Day Streak</span>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="n" id="statDone">0</div><div class="l">সম্পন্ন</div></div>
+      <div class="stat-card"><div class="n" id="statTotal">132</div><div class="l">মোট</div></div>
+      <div class="stat-card"><div class="n" id="statPct">0%</div><div class="l">অগ্রগতি</div></div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="pb-label">
+        <span>তোমার অগ্রগতি</span>
+        <span id="statXP">0 XP</span>
+      </div>
+      <div class="pb-label" style="font-weight:400;color:#636366;margin-bottom:4px" id="pbLabel">0 / 132 অধ্যায় সম্পন্ন</div>
+      <div class="pb"><div class="pb-fill" id="pbFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="section-title">📚 Topics</div>
+    <div class="group-grid" id="groupCards"></div>
+
+    <button onclick="openLesson(0)" style="width:100%;padding:14px;font-size:16px;margin-top:8px">
+      🚀 শুরু থেকে পড়া শুরু করো
+    </button>
+  </section>
+
+  <!-- CHAPTERS VIEW -->
+  <section class="view" id="view_chapters">
+    <div class="section-title">📖 সব অধ্যায়</div>
+    <div class="chapter-progress-list" id="chaptersList"></div>
+  </section>
+
+  <!-- LESSON VIEW -->
+  <section class="view" id="view_lesson">
+    <div id="lessonContent"></div>
+  </section>
+
+  <!-- SEARCH VIEW -->
+  <section class="view" id="view_search">
+    <div class="search-header">
+      <input id="searchInput" type="text" placeholder="🔍 Chapter খোঁজো..." oninput="renderSearch(this.value)" style="margin-top:0">
+    </div>
+    <div id="searchResults">
+      <p style="color:#888;font-size:14px;text-align:center;margin-top:20px">কোনো Chapter খোঁজো...</p>
+    </div>
+  </section>
+
+  <!-- PROGRESS VIEW -->
+  <section class="view" id="view_progress">
+    <div id="progressContent"></div>
+  </section>
+
+</main>
+
+<!-- ── BOTTOM NAV ── -->
+<nav id="bottomNav" style="display:none">
+  <button id="prevBtn" onclick="prevLesson()">◀ আগে</button>
+  <button id="doneBtn" onclick="markDone()">⬜</button>
+  <button id="nextBtn" onclick="nextLesson()">পরে ▶</button>
+</nav>
+
+<!-- ── TAB BAR ── -->
+<nav style="position:fixed;bottom:0;left:0;right:0;height:64px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-top:1px solid #e5e5ea;display:flex;z-index:850" id="tabBar">
+  <button onclick="showView('home')"     style="flex:1;background:none;color:#007aff;font-size:10px;border:none;border-radius:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;margin:0;padding:0">🏠<span>হোম</span></button>
+  <button onclick="showView('chapters')" style="flex:1;background:none;color:#636366;font-size:10px;border:none;border-radius:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;margin:0;padding:0">📖<span>অধ্যায়</span></button>
+  <button onclick="showView('search')"   style="flex:1;background:none;color:#636366;font-size:10px;border:none;border-radius:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;margin:0;padding:0">🔍<span>খুঁজুন</span></button>
+  <button onclick="showView('progress')" style="flex:1;background:none;color:#636366;font-size:10px;border:none;border-radius:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;margin:0;padding:0">📊<span>অগ্রগতি</span></button>
+</nav>
+
+<!-- ── LESSON NAV (shown only in lesson) ── -->
+<!-- bottomNav handles prev/done/next -->
+
+<!-- ── TOAST & XP ── -->
+<div id="toast"></div>
+<div id="xpPop"></div>
+
+<!-- ── SCRIPTS ── -->
+<script src="chapters.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
